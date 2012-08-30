@@ -3,19 +3,11 @@
 namespace RightSignature;
 
 /**
- * 
+ * A RightSignature document instance.
  */
 class Document
 	extends ArrayDecorator
 {
-	private $_client;
-
-	public function __construct($client, $data)
-	{
-		$this->_client = $client;
-		parent::__construct($data);
-	}
-
 	// ----------------------------------------
 	// Signer Links
 
@@ -30,6 +22,6 @@ class Document
 		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
 		$array = ArrayHelpers::collapseGroup($array, 'signer_links');
 
-		return new SignerLinks($client, $array['signer_links']);
+		return new SignerLinks($array['signer_links']);
 	}
 }

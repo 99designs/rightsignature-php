@@ -59,7 +59,7 @@ class PrepackagedDocument
 		));
 		$body = self::_preparePrefillRequest($payload);
 		$response = $this->_client->post('/api/templates.xml', $body);
-		return new Document($this->_client, self::_parsePrefillResponse($response));
+		return new Document(self::_parsePrefillResponse($response));
 	}
 
 	/**

@@ -4,19 +4,6 @@ namespace RightSignature;
 
 class Template
 {
-	private
-		$_client,
-		$_guid;
-
-	/**
-	 *
-	 */
-	public function __construct($client, $guid)
-	{
-		$this->_client = $client;
-		$this->_guid = $guid;
-	}
-
 	// ----------------------------------------
 	// Prepackage Template
 
