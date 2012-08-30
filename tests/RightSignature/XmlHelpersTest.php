@@ -8,17 +8,17 @@ class XmlHelpersTest
 	public function testToArray()
 	{
 		$xml = <<<EOS
-<foo>
-	<quux>42</quux>
-	<bars>
-		<bar>
-			<baz>bla</baz>
-		</bar>
-		<bar>
-			<baz>frobnicate</baz>
-		</bar>
-	</bars>
-</foo>
+			<foo>
+				<quux>42</quux>
+				<bars>
+					<bar>
+						<baz>bla</baz>
+					</bar>
+					<bar>
+						<baz>frobnicate</baz>
+					</bar>
+				</bars>
+			</foo>
 EOS;
 			
 		$array = XmlHelpers::toArray($xml);
@@ -31,13 +31,13 @@ EOS;
 	public function testToElement()
 	{
 		$expected = <<<EOS
-<foo>
-	<quux bar="baz">
-		<bla>A</bla>
-		<bla>true</bla>
-		<bla yadda="123">C</bla>
-	</quux>
-</foo>
+			<foo>
+				<quux bar="baz">
+					<bla>A</bla>
+					<bla>true</bla>
+					<bla yadda="123">C</bla>
+				</quux>
+			</foo>
 EOS;
 
 		$array = array(

@@ -11,21 +11,20 @@ class DocumentTest
 	public function testSignerLinks()
 	{
 		$response = <<<EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<document>
-	<signer-links>
-		<signer-link>
-			<name>John Employee</name>
-			<role>Signer</role>
-			<signer-token>bg995X011CqtY44L</signer-token>
-		</signer-link>
-		<signer-link>
-			<name>Susan Employee</name>
-			<role>Signer</role>
-			<signer-token>ad8XC0013d77d88X</signer-token>
-		</signer-link>
-	</signer-links>
-</document>
+			<document>
+				<signer-links>
+					<signer-link>
+						<name>John Employee</name>
+						<role>Signer</role>
+						<signer-token>bg995X011CqtY44L</signer-token>
+					</signer-link>
+					<signer-link>
+						<name>Susan Employee</name>
+						<role>Signer</role>
+						<signer-token>ad8XC0013d77d88X</signer-token>
+					</signer-link>
+				</signer-links>
+			</document>
 EOS;
 
 		$client = \Mockery::mock('client');
