@@ -26,9 +26,9 @@ class PrepackagedDocument
 	 * Creates a prefilled document via the Prefill Template call.
 	 * 
 	 * $args is an array like:
-   *
-   *   array(
-   *     'subject' => '...',
+	 *
+	 *   array(
+	 *     'subject' => '...',
 	 *     'roles' => array(
 	 *       array(
 	 *         'role_name' => '...',         // or role_id
