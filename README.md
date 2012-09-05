@@ -11,7 +11,7 @@ implemented:
  * Send Template
  * Signer Links
 
-The following API calls are not yet implemented.
+The following API calls are not yet implemented:
 
  * List Documents
  * Document Details
@@ -27,6 +27,8 @@ The following API calls are not yet implemented.
  * User Details
  * Add User
  * Usage Report
+
+Pull requests welcome.
 
 Dependencies
 ------------
