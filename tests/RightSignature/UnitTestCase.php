@@ -5,7 +5,7 @@ namespace RightSignature;
 /**
  * Extends UnitTestCase with additional helpers.
  */
-class UnitTestCase
+abstract class UnitTestCase
 	extends \UnitTestCase
 {
 	/**
