@@ -15,7 +15,7 @@ class Document
 	{
 		$url = sprintf('/api/documents/%s/signer_links.xml%s',
 			$documentGuid,
-			$returnUrl ? sprintf('?redirect_location=%s', $returnUrl) : ''
+			$returnUrl ? sprintf('?redirect_location=%s', urlencode($returnUrl)) : ''
 		);
 		$xml = $client->get($url);
 

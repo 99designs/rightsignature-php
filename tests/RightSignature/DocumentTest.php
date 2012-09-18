@@ -35,7 +35,9 @@ EOS;
 
 		$client = \Mockery::mock('client');
 		$client->shouldReceive('get')
-			->with('/api/documents/1234/signer_links.xml?redirect_location=http://example.com/')
+			->with(sprintf('/api/documents/1234/signer_links.xml?redirect_location=%s',
+				urlencode('http://example.com/')
+			))
 			->andReturn($response);
 		Document::signerLinks($client, '1234', 'http://example.com/');
 
