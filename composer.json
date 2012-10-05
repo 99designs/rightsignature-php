@@ -8,11 +8,11 @@
 	],
 	"require": {
 		"php": ">=5.3",
-		"99designs/ergo": "2.1.0"
+		"99designs/ergo": ">=2.1.0"
 	},
 	"require-dev": {
-		"lastcraft/simpletest": "1.1.0",
-		"mockery/mockery": "0.7.2"
+		"lastcraft/simpletest": ">=1.1.0",
+		"mockery/mockery": ">=0.7.2"
 	},
 	"autoload": {
 		"psr-0": {"RightSignature": "classes"}
