@@ -1,7 +1,7 @@
 <?php
 
 class RightSignatureTest
-	extends UnitTestCase
+	extends \RightSignature\UnitTestCase
 {
 	public function testEmbeddedWidgetUrl()
 	{

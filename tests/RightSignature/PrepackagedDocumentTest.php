@@ -3,7 +3,7 @@
 namespace RightSignature;
 
 class PrepackagedDocumentTest
-	extends UnitTestCase
+	extends \RightSignature\UnitTestCase
 {
 	public function testPrefillAndSend()
 	{

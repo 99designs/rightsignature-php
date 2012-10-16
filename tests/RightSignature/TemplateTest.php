@@ -3,7 +3,7 @@
 namespace RightSignature;
 
 class TemplateTest
-	extends UnitTestCase
+	extends \RightSignature\UnitTestCase
 {
 	public function testPrepackage()
 	{

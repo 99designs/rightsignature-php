@@ -3,7 +3,7 @@
 namespace RightSignature;
 
 class DocumentTest
-	extends UnitTestCase
+	extends \RightSignature\UnitTestCase
 {
 	// ----------------------------------------
 	// Signer Links
