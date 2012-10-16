@@ -2,6 +2,9 @@
 
 namespace RightSignature;
 
+use \RightSignature\Util\ArrayHelpers as ArrayHelpers;
+use \RightSignature\Util\XmlHelpers as XmlHelpers;
+
 class Template
 {
 	// ----------------------------------------

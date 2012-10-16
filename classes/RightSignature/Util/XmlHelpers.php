@@ -1,6 +1,6 @@
 <?php
 
-namespace RightSignature;
+namespace RightSignature\Util;
 
 /**
  * Helpers for marshalling data from XML to array-trees, and vice-versa.

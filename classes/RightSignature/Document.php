@@ -2,11 +2,14 @@
 
 namespace RightSignature;
 
+use \RightSignature\Util\ArrayHelpers as ArrayHelpers;
+use \RightSignature\Util\XmlHelpers as XmlHelpers;
+
 /**
  * A RightSignature document instance.
  */
 class Document
-	extends ArrayDecorator
+	extends \RightSignature\Util\ArrayDecorator
 {
 	// ----------------------------------------
 	// Signer Links

@@ -1,6 +1,6 @@
 <?php
 
-namespace RightSignature;
+namespace RightSignature\Util;
 
 /**
  * A read-only wrapper around an array-tree that provides property-style

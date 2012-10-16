@@ -2,11 +2,14 @@
 
 namespace RightSignature;
 
+use \RightSignature\Util\ArrayHelpers as ArrayHelpers;
+use \RightSignature\Util\XmlHelpers as XmlHelpers;
+
 /**
  * A POST callback from RightSignature.
  */
 class Callback
-	extends ArrayDecorator
+	extends \RightSignature\Util\ArrayDecorator
 {
 	const TYPE_TEMPLATE = 'Template';
 	const TYPE_DOCUMENT = 'Document';

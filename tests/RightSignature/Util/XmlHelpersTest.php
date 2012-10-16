@@ -1,6 +1,6 @@
 <?php
 
-namespace RightSignature;
+namespace RightSignature\Util;
 
 class XmlHelpersTest
 	extends \UnitTestCase

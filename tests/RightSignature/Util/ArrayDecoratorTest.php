@@ -1,9 +1,9 @@
 <?php
 
-namespace RightSignature;
+namespace RightSignature\Util;
 
 class ArrayDecoratorTest
-	extends UnitTestCase
+	extends \RightSignature\UnitTestCase
 {
 	public function setUp()
 	{

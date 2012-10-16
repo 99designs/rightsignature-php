@@ -2,12 +2,15 @@
 
 namespace RightSignature;
 
+use \RightSignature\Util\ArrayHelpers as ArrayHelpers;
+use \RightSignature\Util\XmlHelpers as XmlHelpers;
+
 /**
  * An intermediate document returned from a Prepackage Template call.
  * @see https://rightsignature.com/apidocs/api_calls?api_method=prepackageTemplate
  */
 class PrepackagedDocument
-	extends ArrayDecorator
+	extends \RightSignature\Util\ArrayDecorator
 {
 	const ACTION_SEND = 'send';
 	const ACTION_PREFILL = 'prefill';

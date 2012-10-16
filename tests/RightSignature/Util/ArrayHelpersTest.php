@@ -1,6 +1,6 @@
 <?php
 
-namespace RightSignature;
+namespace RightSignature\Util;
 
 class ArrayHelpersTest
 	extends \UnitTestCase

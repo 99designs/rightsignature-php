@@ -12,7 +12,7 @@ class InvalidRequest
 	 */
 	public static function fromXml($xml)
 	{
-		$data = \RightSignature\XmlHelpers::toArray($xml);
+		$data = \RightSignature\Util\XmlHelpers::toArray($xml);
 		return new self($data['message']);
 	}
 }
