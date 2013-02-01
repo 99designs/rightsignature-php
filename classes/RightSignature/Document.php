@@ -11,6 +11,9 @@ use \RightSignature\Util\XmlHelpers as XmlHelpers;
 class Document
 	extends \RightSignature\Util\ArrayDecorator
 {
+	const STATE_PENDING = 'pending';
+	const STATE_SIGNED = 'signed';
+
 	// ----------------------------------------
 	// Signer Links
 
