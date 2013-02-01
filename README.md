@@ -6,6 +6,7 @@ A PHP wrapper around the RightSignature API.
 This is not a complete implementation. The following API calls are
 implemented:
 
+ * Document Details
  * Prepackage Template
  * Prefill Template
  * Send Template
@@ -14,7 +15,6 @@ implemented:
 The following API calls are not yet implemented:
 
  * List Documents
- * Document Details
  * Batch Document Details
  * Resend Reminder Emails
  * Trash Document

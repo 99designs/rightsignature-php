@@ -66,6 +66,9 @@ class ArrayHelpers
 	 */
 	public static function collapseGroup($array, $key)
 	{
+		if (!isset($array[$key]))
+			return $array;
+
 		$groupContents = array_values($array[$key]);
 		// Ensure only a single intermediate array exists
 		assert(count($groupContents == 1));

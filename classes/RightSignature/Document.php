@@ -27,4 +27,20 @@ class Document
 
 		return new SignerLinks($array['signer_links']);
 	}
+
+	// ----------------------------------------
+	// Document Details
+
+	public static function documentDetails($client, $documentGuid)
+	{
+		$xml = $client->get(sprintf('/api/documents/%s.xml', $documentGuid));
+
+		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
+		$array = ArrayHelpers::collapseGroup($array, 'audit_trail');
+		$array = ArrayHelpers::collapseGroup($array, 'form_fields');
+		$array = ArrayHelpers::collapseGroup($array, 'recipients');
+		$array = ArrayHelpers::collapseGroup($array, 'pages');
+
+		return new self($array);
+	}
 }
