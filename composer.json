@@ -11,7 +11,7 @@
 	],
 	"require": {
 		"php": ">=5.3",
-		"99designs/ergo-http": "1.0.*"
+		"99designs/ergo": "*"
 	},
 	"require-dev": {
 		"lastcraft/simpletest": ">=1.1.0",
