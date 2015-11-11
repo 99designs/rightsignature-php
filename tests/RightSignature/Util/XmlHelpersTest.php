@@ -2,8 +2,7 @@
 
 namespace RightSignature\Util;
 
-class XmlHelpersTest
-	extends \UnitTestCase
+class XmlHelpersTest extends \Tests\UnitTestCase
 {
 	public function testToArray()
 	{
@@ -23,9 +22,9 @@ EOS;
 			
 		$array = XmlHelpers::toArray($xml);
 
-		$this->assertEqual('42', $array['quux']);
-		$this->assertEqual('bla', $array['bars']['bar'][0]['baz']);
-		$this->assertEqual('frobnicate', $array['bars']['bar'][1]['baz']);
+		$this->assertEquals('42', $array['quux']);
+		$this->assertEquals('bla', $array['bars']['bar'][0]['baz']);
+		$this->assertEquals('frobnicate', $array['bars']['bar'][1]['baz']);
 	}
 
 	public function testToElement()
@@ -58,8 +57,8 @@ EOS;
 
 		$foo = XmlHelpers::toElement($array);
 
-		$this->assertEqual('A', (string) $foo->quux->bla[0]);
-		$this->assertEqual('baz', (string) $foo->quux['bar']);
-		$this->assertEqual('123', (string) $foo->quux->bla[2]['yadda']);
+		$this->assertEquals('A', (string) $foo->quux->bla[0]);
+		$this->assertEquals('baz', (string) $foo->quux['bar']);
+		$this->assertEquals('123', (string) $foo->quux->bla[2]['yadda']);
 	}
 }

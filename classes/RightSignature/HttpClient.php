@@ -2,46 +2,79 @@
 
 namespace RightSignature;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
+
 /**
  * Communicates with the RightSignature HTTP endpoint.
  */
-class HttpClient
+class HttpClient implements HttpClientInterface
 {
 	private $_client;
+	private $_apiToken;
 
-	public static function forToken($apiToken)
+	public static function forToken($apiToken, ClientInterface $client = null)
 	{
-		$instance = new self();
-		$instance->_client->addHeader(sprintf('Api-Token: %s', $apiToken));
+		if (! $client) {
+			$client = new Client([
+				'base_uri' => \RightSignature::API_ENDPOINT,
+			]);
+		}
+		$instance = new self($client);
+		$instance->setToken($apiToken);
+		//$instance->_client->addHeader(sprintf('Api-Token: %s', $apiToken));
 		return $instance;
 	}
 
-	public function __construct()
+	private function __construct(ClientInterface $client)
 	{
-		$this->_client = new \Ergo\Http\Client(\RightSignature::API_ENDPOINT);
-		$this->_client->addHeader(sprintf('Api-Version: %s', \RightSignature::API_VERSION));
+		$this->_client = $client;
 	}
 
 	/**
 	 * @param string $path
 	 * @return string
-	 * @throws RightSignature\Exception
+	 * @throws Exception
 	 */
 	public function get($path)
 	{
-		$response = $this->_submit('get', $path);
+		$response = $this->_client->get($path, [
+			'headers' => [
+				'Api-Token' => $this->_apiToken,
+				'Api-Version' => \RightSignature::API_VERSION
+			]
+		]);
+
 		return $response;
+	}
+
+	public function setToken($apiToken)
+	{
+		$this->_apiToken = $apiToken;
 	}
 
 	/**
 	 * @param string $path
 	 * @param string $body
 	 * @return string
-	 * @throws RightSignature\Exception
+	 * @throws Exception
 	 */
 	public function post($path, $body=null)
 	{
-		$response = $this->_submit('post', $path, $body, $body ? 'application/xml' : null);
+		$postRequest['headers'] = [
+			'Api-Token' => $this->_apiToken,
+			'Api-Version' => \RightSignature::API_VERSION
+		];
+
+		if (is_array($body)) {
+			$postRequest['form_params'] = $body;
+		}
+		else {
+			$postRequest['body'] = $body;
+		}
+		$response = $this->_client->post($path, $postRequest);
+
 		return $response;
 	}
 
@@ -56,7 +89,7 @@ class HttpClient
 			$response = call_user_func_array(array($this->_client, $method), $args);
 			return $response->getBody();
 		}
-		catch (\Ergo\Http\Error $e)
+		catch (\Exception $e)
 		{
 			throw self::_translateError($e);
 		}
@@ -67,9 +100,9 @@ class HttpClient
 	 * @param \Ergo\Http\Error $e
 	 * @return \RightSignature\Exception
 	 */
-	private static function _translateError($e)
+	private static function _translateError(\Exception $e)
 	{
-		switch ($e->getStatusCode())
+		switch ($e->getCode())
 		{
 			case 400:
 				return new Exception\RateLimitExceeded();
