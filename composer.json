@@ -11,9 +11,10 @@
 	],
 	"require": {
 		"php": ">=5.3",
-		"99designs/ergo": "*"
+		"99designs/ergo-http": "dev-master"
 	},
 	"require-dev": {
+	  	"phpunit/phpunit": "5.*",
 		"lastcraft/simpletest": ">=1.1.0",
 		"mockery/mockery": ">=0.7.2"
 	},
