@@ -79,7 +79,7 @@ class RightSignature
 	 */
 	public function document($documentGuid)
 	{
-		// return Document::details($this->_client, $documentGuid);
+		return Document::documentDetails($this->_client, $documentGuid);
 	}
 
 	/**
