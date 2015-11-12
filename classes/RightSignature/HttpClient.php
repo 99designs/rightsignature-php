@@ -43,8 +43,8 @@ class HttpClient implements HttpClientInterface
 			'headers' => [
 				'Api-Token' => $this->_apiToken,
 				'Api-Version' => \RightSignature::API_VERSION
-			]
-			$postRequest['verify'] = false;
+			],
+			'verify' => false
 		]);
 
 		return $response;
