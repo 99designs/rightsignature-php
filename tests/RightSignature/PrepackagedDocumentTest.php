@@ -2,12 +2,11 @@
 
 namespace RightSignature;
 
-class PrepackagedDocumentTest
-	extends \RightSignature\UnitTestCase
+class PrepackagedDocumentTest extends \Tests\UnitTestCase
 {
-	public function testPrefillAndSend()
-	{
-		$expectedRequest = <<<EOS
+    public function testPrefillAndSend()
+    {
+        $expectedRequest = <<<EOS
 			<template>
 				<guid>1234</guid>
 				<subject>Example subject</subject>
@@ -36,60 +35,60 @@ class PrepackagedDocumentTest
 			</template>
 EOS;
 
-		$response = <<<EOS
+        $response = <<<EOS
 			<document>
 				<status>sent</status>
 				<guid>DJ53LF289DS23FF823J4</guid>
 			</document>
 EOS;
 
-		$self = $this;
-		$client = \Mockery::mock('client');
-		$client->shouldReceive('post')
-			->with(
-				'/api/templates.xml',
-				\Mockery::on(function ($body) use ($self, $expectedRequest) {
-					$self->assertEqualXml($expectedRequest, $body);
-					return true;
-				})
-			)
-			->andReturn($response);
+        $self = $this;
+        $client = \Mockery::mock('client');
+        $client->shouldReceive('post')
+            ->with(
+                '/api/templates.xml',
+                \Mockery::on(function ($body) use ($self, $expectedRequest) {
+                    $self->assertEqualXml($expectedRequest, $body);
+                    return true;
+                })
+            )
+            ->andReturn($response);
 
-		$prepackaged = new PrepackagedDocument($client, array('guid' => '1234'));
-		$guid = $prepackaged->prefillAndSend(array(
-			'subject' => 'Example subject',
-			'callback_location' => 'http://example.com/',
-			'roles' => array(
-				array(
-					'role_name' => 'Example role',
-					'name' => 'Joe Bloggs',
-					'locked' => true,
-				),
-				array(
-					'role_id' => '2345',
-					'name' => 'Jane Doe',
-					'email' => 'jane@example.com',
-				),
-			),
-			'merge_fields' => array(
-				array(
-					'merge_field_name' => 'Example field',
-					'value' => 'foo',
-					'locked' => true,
-				),
-				array(
-					'merge_field_id' => '3456',
-					'value' => 'bar',
-				),
-			),
-		));
+        $prepackaged = new PrepackagedDocument($client, array('guid' => '1234'));
+        $guid = $prepackaged->prefillAndSend(array(
+            'subject' => 'Example subject',
+            'callback_location' => 'http://example.com/',
+            'roles' => array(
+                array(
+                    'role_name' => 'Example role',
+                    'name' => 'Joe Bloggs',
+                    'locked' => true,
+                ),
+                array(
+                    'role_id' => '2345',
+                    'name' => 'Jane Doe',
+                    'email' => 'jane@example.com',
+                ),
+            ),
+            'merge_fields' => array(
+                array(
+                    'merge_field_name' => 'Example field',
+                    'value' => 'foo',
+                    'locked' => true,
+                ),
+                array(
+                    'merge_field_id' => '3456',
+                    'value' => 'bar',
+                ),
+            ),
+        ));
 
-		$this->assertEqual('DJ53LF289DS23FF823J4', $guid);
-	}
+        $this->assertEquals('DJ53LF289DS23FF823J4', $guid);
+    }
 
-	public function testPrefill()
-	{
-		$response = <<<EOS
+    public function testPrefill()
+    {
+        $response = <<<EOS
 			<template>
 				<redirect-token>0b39aa811eca4ddeb89fd541c487ba79-2-8bffa095998e41ecbc420fb624b2fd</redirect-token>
 				<guid>a_966_8bffa095998e41ecbdbc420fb624fd</guid>
@@ -125,25 +124,25 @@ EOS;
 			</template>
 EOS;
 
-		$client = \Mockery::mock('client');
-		$client->shouldReceive('post')
-			->andReturn($response);
+        $client = \Mockery::mock('client');
+        $client->shouldReceive('post')
+            ->andReturn($response);
 
-		$prepackaged = new PrepackagedDocument($client, array('guid' => '1234'));
-		$document = $prepackaged->prefill(array(
-			'subject' => 'anything',
-			'roles' => array(
-				array(
-					'role_name' => 'foo',
-					'name' => 'joe bloggs',
-					'email' => 'bloggs@example.com',
-				),
-			),
-		));
+        $prepackaged = new PrepackagedDocument($client, array('guid' => '1234'));
+        $document = $prepackaged->prefill(array(
+            'subject' => 'anything',
+            'roles' => array(
+                array(
+                    'role_name' => 'foo',
+                    'name' => 'joe bloggs',
+                    'email' => 'bloggs@example.com',
+                ),
+            ),
+        ));
 
-		$this->assertEqual('0b39aa811eca4ddeb89fd541c487ba79-2-8bffa095998e41ecbc420fb624b2fd', $document->redirect_token);
-		$this->assertEqual('disclosure.pdf', $document->pages[0]->original_template_filename);
-		$this->assertEqual('Company Name', $document->merge_fields[0]->name);
-		$this->assertEqual('cc_A', $document->roles[0]->document_role_id);
-	}
+        $this->assertEquals('0b39aa811eca4ddeb89fd541c487ba79-2-8bffa095998e41ecbc420fb624b2fd', $document->redirect_token);
+        $this->assertEquals('disclosure.pdf', $document->pages[0]->original_template_filename);
+        $this->assertEquals('Company Name', $document->merge_fields[0]->name);
+        $this->assertEquals('cc_A', $document->roles[0]->document_role_id);
+    }
 }

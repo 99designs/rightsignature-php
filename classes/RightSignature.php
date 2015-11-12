@@ -11,7 +11,7 @@ use RightSignature\Template as Template;
 class RightSignature
 {
 	const API_ENDPOINT = 'https://rightsignature.com';
-	const API_VERSION = '1.2';
+	const API_VERSION = '1.3';
 
 	private $_client;
 
@@ -77,9 +77,9 @@ class RightSignature
 	 * @param int $documentGuid document GUID
 	 * @return RightSignature\Document
 	 */
-	public function document($documentGuid)
+	public function documentDetails($documentGuid)
 	{
-		// return Document::details($this->_client, $documentGuid);
+		return Document::documentDetails($this->_client, $documentGuid);
 	}
 
 	/**

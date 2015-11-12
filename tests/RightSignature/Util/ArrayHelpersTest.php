@@ -2,8 +2,7 @@
 
 namespace RightSignature\Util;
 
-class ArrayHelpersTest
-	extends \UnitTestCase
+class ArrayHelpersTest extends \Tests\UnitTestCase
 {
 	public function testIsAssociative()
 	{
@@ -20,7 +19,7 @@ class ArrayHelpersTest
 			}
 		);
 
-		$this->assertEqual(
+		$this->assertEquals(
 			array('FOO' => 'bar!', 'BAZ' => 'bla!'),
 			$mapped
 		);
@@ -44,7 +43,7 @@ class ArrayHelpersTest
 			),
 		);
 
-		$this->assertEqual($expected, $normalised);
+		$this->assertEquals($expected, $normalised);
 	}
 
 	public function testCollapseGroup()
@@ -65,7 +64,7 @@ class ArrayHelpersTest
 			),
 		);
 
-		$this->assertEqual($collapsed, ArrayHelpers::collapseGroup($uncollapsed, 'foos'));
+		$this->assertEquals($collapsed, ArrayHelpers::collapseGroup($uncollapsed, 'foos'));
 	}
 
 	public function testCollapseSingletonGroup()
@@ -84,6 +83,6 @@ class ArrayHelpersTest
 			),
 		);
 
-		$this->assertEqual($collapsed, ArrayHelpers::collapseGroup($uncollapsable, 'foos'));
+		$this->assertEquals($collapsed, ArrayHelpers::collapseGroup($uncollapsable, 'foos'));
 	}
 }

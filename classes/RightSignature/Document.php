@@ -8,8 +8,7 @@ use \RightSignature\Util\XmlHelpers as XmlHelpers;
 /**
  * A RightSignature document instance.
  */
-class Document
-	extends \RightSignature\Util\ArrayDecorator
+class Document extends \RightSignature\Util\ArrayDecorator
 {
 	const STATE_PENDING = 'pending';
 	const STATE_SIGNED = 'signed';
