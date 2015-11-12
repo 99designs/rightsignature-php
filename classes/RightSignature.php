@@ -77,7 +77,7 @@ class RightSignature
 	 * @param int $documentGuid document GUID
 	 * @return RightSignature\Document
 	 */
-	public function document($documentGuid)
+	public function documentDetails($documentGuid)
 	{
 		return Document::documentDetails($this->_client, $documentGuid);
 	}
