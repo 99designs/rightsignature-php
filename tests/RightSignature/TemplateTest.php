@@ -2,12 +2,12 @@
 
 namespace RightSignature;
 
-class TemplateTest
-	extends \RightSignature\UnitTestCase
+
+class TemplateTest extends \Tests\UnitTestCase
 {
-	public function testPrepackage()
-	{
-		$response = <<<EOS
+    public function testPrepackage()
+    {
+        $response = <<<EOS
 			<template>
 				<guid>a_284964_14csd05aa7a3eb4f248772cd163b60cb17</guid>
 				<redirect-token>24d8bb96a9144d319cc32f91e-4-14c05aa7a3eb4f243b60cb17</redirect-token>
@@ -55,23 +55,23 @@ class TemplateTest
 			</template>
 EOS;
 
-		$self = $this;
-		$client = \Mockery::mock('client');
-		$client->shouldReceive('post')
-			->with(
-				'/api/templates/1234/prepackage.xml',
-				\Mockery::on(function($body) use ($self) {
-					$self->assertEqualXml('<callback_location>http://example.com/</callback_location>', $body);
-					return true;
-				})
-			)
-			->andReturn($response);
+        $self = $this;
+        $client = \Mockery::mock('client');
+        $client->shouldReceive('post')
+            ->with(
+                '/api/templates/1234/prepackage.xml',
+                \Mockery::on(function ($body) use ($self) {
+                    $self->assertEqualXml('<callback_location>http://example.com/</callback_location>', $body);
+                    return true;
+                })
+            )
+            ->andReturn($response);
 
-		$prepackaged = Template::prepackage($client, '1234', 'http://example.com/');
+        $prepackaged = Template::prepackage($client, '1234', 'http://example.com/');
 
-		$this->assertEqual('a_284964_14csd05aa7a3eb4f248772cd163b60cb17', $prepackaged->guid);
-		$this->assertEqual('Your Name', $prepackaged->merge_fields[0]->name);
-		$this->assertEqual('true', $prepackaged->roles[0]->is_sender);
-		$this->assertEqual('disclosure.pdf', $prepackaged->pages[0]->original_template_filename);
-	}
+        $this->assertEquals('a_284964_14csd05aa7a3eb4f248772cd163b60cb17', $prepackaged->guid);
+        $this->assertEquals('Your Name', $prepackaged->merge_fields[0]->name);
+        $this->assertEquals('true', $prepackaged->roles[0]->is_sender);
+        $this->assertEquals('disclosure.pdf', $prepackaged->pages[0]->original_template_filename);
+    }
 }

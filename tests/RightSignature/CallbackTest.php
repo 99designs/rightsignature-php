@@ -2,12 +2,12 @@
 
 namespace RightSignature;
 
-class CallbackTest
-	extends \UnitTestCase
+
+class CallbackTest extends \PHPUnit_Framework_TestCase
 {
-	public function testParseDocumentSigned()
-	{
-		$xml = <<<EOS
+    public function testParseDocumentSigned()
+    {
+        $xml = <<<EOS
 			<callback>
 				<callback-type>Document</callback-type>
 				<guid>dl3jsdf9850dfkl3-dfl2</guid>
@@ -17,15 +17,15 @@ class CallbackTest
 			</callback>
 EOS;
 
-		$callback = Callback::parse($xml);
-		$this->assertTrue($callback->isDocument());
-		$this->assertTrue($callback->isSigned());
-		$this->assertEqual('dl3jsdf9850dfkl3-dfl2', $callback->guid);
-	}
+        $callback = Callback::parse($xml);
+        $this->assertTrue($callback->isDocument());
+        $this->assertTrue($callback->isSigned());
+        $this->assertEquals('dl3jsdf9850dfkl3-dfl2', $callback->guid);
+    }
 
-	public function testParseTemplateCreated()
-	{
-		$xml = <<<EOS
+    public function testParseTemplateCreated()
+    {
+        $xml = <<<EOS
 			<callback>
 				<callback-type>Template</callback-type>
 				<guid>dl3jsdf9850dfkl3-dfl2</guid>
@@ -34,9 +34,9 @@ EOS;
 			</callback>
 EOS;
 
-		$callback = Callback::parse($xml);
-		$this->assertTrue($callback->isTemplate());
-		$this->assertTrue($callback->isCreated());
-		$this->assertEqual('dl3jsdf9850dfkl3-dfl2', $callback->guid);
-	}
+        $callback = Callback::parse($xml);
+        $this->assertTrue($callback->isTemplate());
+        $this->assertTrue($callback->isCreated());
+        $this->assertEquals('dl3jsdf9850dfkl3-dfl2', $callback->guid);
+    }
 }

@@ -12,14 +12,16 @@
 	],
 	"require": {
 		"php": ">=5.3",
-	  	"phpunit/phpunit": "5.0.*",
 	  	"99designs/ergo-http": "*"
 	},
 	"require-dev": {
-		"lastcraft/simpletest": ">=1.1.0",
-		"mockery/mockery": ">=0.7.2"
+	  "phpunit/phpunit": "5.0.*",
+	  "mockery/mockery": ">=0.7.2"
 	},
 	"autoload": {
 		"psr-0": {"RightSignature": "classes"}
+	},
+  	"autoload-dev": {
+	  	"psr-4": { "Tests\\": "tests/" }
 	}
 }

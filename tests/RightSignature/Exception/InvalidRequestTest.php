@@ -2,13 +2,12 @@
 
 namespace RightSignature\Exception;
 
-class InvalidRequestTest
-	extends \UnitTestCase
+class InvalidRequestTest extends \PHPUnit_Framework_TestCase
 {
 	public function testFromXml()
 	{
 		$xml = '<error><message>Sample message</message></error>';
 		$ex = InvalidRequest::fromXml($xml);
-		$this->assertEqual('Sample message', $ex->getMessage());
+		$this->assertEquals('Sample message', $ex->getMessage());
 	}
 }
