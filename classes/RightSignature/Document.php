@@ -8,8 +8,7 @@ use \RightSignature\Util\XmlHelpers as XmlHelpers;
 /**
  * A RightSignature document instance.
  */
-class Document
-	extends \RightSignature\Util\ArrayDecorator
+class Document extends \RightSignature\Util\ArrayDecorator
 {
 	const STATE_PENDING = 'pending';
 	const STATE_SIGNED = 'signed';
@@ -23,7 +22,7 @@ class Document
 			$documentGuid,
 			$returnUrl ? sprintf('?redirect_location=%s', urlencode($returnUrl)) : ''
 		);
-		$xml = $client->get($url);
+		$xml = $client->get($url)->getBody()->getContent();
 
 		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
 		$array = ArrayHelpers::collapseGroup($array, 'signer_links');
@@ -36,7 +35,7 @@ class Document
 
 	public static function documentDetails($client, $documentGuid)
 	{
-		$xml = $client->get(sprintf('/api/documents/%s.xml', $documentGuid));
+		$xml = $client->get(sprintf('/api/documents/%s.xml', $documentGuid))->getBody()->getContent();
 
 		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
 		$array = ArrayHelpers::collapseGroup($array, 'audit_trail');

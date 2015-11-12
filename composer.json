@@ -12,7 +12,8 @@
 	],
 	"require": {
 		"php": ">=5.3",
-	  	"99designs/ergo-http": "*"
+	  	"99designs/ergo-http": "*",
+		"guzzlehttp/guzzle": "~6.0"
 	},
 	"require-dev": {
 	  "phpunit/phpunit": "5.0.*",
