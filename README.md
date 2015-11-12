@@ -33,8 +33,8 @@ Pull requests welcome.
 Dependencies
 ------------
 
-`RightSignature\HttpClient` currently has a dependency on [Ergo][1].
-The test suite additionally requires [SimpleTest][2] and [Mockery][3].
+`RightSignature\HttpClient` currently has a dependency on [Guzzler][1].
+The test suite additionally requires [PHPUnit][2] and [Mockery][3].
 
 Usage
 -----
@@ -57,7 +57,7 @@ Entities match the structure of the API responses:
 
 See [RightSignature API documentation][4] for details.
 
- [1]: https://github.com/99designs/ergo
- [2]: http://simpletest.org
+ [1]: https://github.com/guzzle/guzzle
+ [2]: https://github.com/sebastianbergmann/phpunit
  [3]: https://github.com/padraic/mockery
  [4]: https://rightsignature.com/apidocs/api_calls
