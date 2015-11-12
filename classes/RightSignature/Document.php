@@ -22,7 +22,7 @@ class Document extends \RightSignature\Util\ArrayDecorator
 			$documentGuid,
 			$returnUrl ? sprintf('?redirect_location=%s', urlencode($returnUrl)) : ''
 		);
-		$xml = $client->get($url)->getBody()->getContent();
+		$xml = $client->get($url);
 
 		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
 		$array = ArrayHelpers::collapseGroup($array, 'signer_links');
@@ -35,7 +35,7 @@ class Document extends \RightSignature\Util\ArrayDecorator
 
 	public static function documentDetails($client, $documentGuid)
 	{
-		$xml = $client->get(sprintf('/api/documents/%s.xml', $documentGuid))->getBody()->getContent();
+		$xml = $client->get(sprintf('/api/documents/%s.xml', $documentGuid));
 
 		$array = ArrayHelpers::normaliseKeys(XmlHelpers::toArray($xml));
 		$array = ArrayHelpers::collapseGroup($array, 'audit_trail');

@@ -6,13 +6,8 @@
 	"authors": [
 		{"name": "Stuart Campbell", "email": "stuart.campbell@99designs.com"}
 	],
-  	"minimum-stability": "dev",
-	"repositories": [
-		{ "type": "vcs", "url": "https://github.com/99designs/ergo-http" }
-	],
 	"require": {
 		"php": ">=5.3",
-	  	"99designs/ergo-http": "*",
 		"guzzlehttp/guzzle": "~6.0"
 	},
 	"require-dev": {

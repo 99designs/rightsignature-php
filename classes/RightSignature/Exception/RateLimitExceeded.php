@@ -2,8 +2,7 @@
 
 namespace RightSignature\Exception;
 
-class RateLimitExceeded
-	extends \RightSignature\Exception
+class RateLimitExceeded extends \RightSignature\Exception
 {
 	public function __construct()
 	{

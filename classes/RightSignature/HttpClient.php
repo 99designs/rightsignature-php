@@ -11,9 +11,21 @@ use GuzzleHttp\Exception\RequestException;
  */
 class HttpClient implements HttpClientInterface
 {
+	/**
+	 * @var ClientInterface
+     */
 	private $_client;
+
+	/**
+	 * @var api token
+     */
 	private $_apiToken;
 
+	/**
+	 * @param The $apiToken
+	 * @param \GuzzleHttp\ClientInterface|null $client
+	 * @return HttpClient
+     */
 	public static function forToken($apiToken, ClientInterface $client = null)
 	{
 		if (! $client) {
@@ -23,10 +35,13 @@ class HttpClient implements HttpClientInterface
 		}
 		$instance = new self($client);
 		$instance->setToken($apiToken);
-		//$instance->_client->addHeader(sprintf('Api-Token: %s', $apiToken));
+
 		return $instance;
 	}
 
+	/**
+	 * @param \GuzzleHttp\ClientInterface $client
+     */
 	private function __construct(ClientInterface $client)
 	{
 		$this->_client = $client;
@@ -39,19 +54,17 @@ class HttpClient implements HttpClientInterface
 	 */
 	public function get($path)
 	{
-		$response = $this->_client->get($path, [
-			'headers' => [
-				'Api-Token' => $this->_apiToken,
-				'Api-Version' => \RightSignature::API_VERSION
+		$getRequest = [
+			$path, [
+				'headers' => [
+					'Api-Token' => $this->_apiToken,
+					'Api-Version' => \RightSignature::API_VERSION
+				],
+				'verify' => false
 			]
-		]);
+		];
 
-		return $response;
-	}
-
-	public function setToken($apiToken)
-	{
-		$this->_apiToken = $apiToken;
+		return $this->_submit('get', $getRequest);
 	}
 
 	/**
@@ -62,54 +75,88 @@ class HttpClient implements HttpClientInterface
 	 */
 	public function post($path, $body=null)
 	{
-		$postRequest['headers'] = [
-			'Api-Token' => $this->_apiToken,
-			'Api-Version' => \RightSignature::API_VERSION
+		$postRequest = [
+			$path, [
+				'headers' => [
+					'Api-Token' => $this->_apiToken,
+					'Api-Version' => \RightSignature::API_VERSION
+				],
+				'verify' => false
+			]
 		];
 
-		if (is_array($body)) {
+		if (is_array($body))
+		{
 			$postRequest['form_params'] = $body;
 		}
-		else {
+		else
+		{
 			$postRequest['body'] = $body;
 		}
-		$response = $this->_client->post($path, $postRequest);
 
-		return $response;
+		return $this->_submit('post', $postRequest);
 	}
 
-	// ----------------------------------------
-	// Private methods
-
-	private function _submit($method /*, $args...*/)
-	{
-		$args = array_slice(func_get_args(), 1);
+	/**
+	 * @param $method
+	 * @param array $params
+	 * @return mixed
+	 * @throws Exception
+     */
+	private function _submit($method, Array $params) {
 		try
 		{
-			$response = call_user_func_array(array($this->_client, $method), $args);
-			return $response->getBody();
+			$response = call_user_func_array(array($this->_client, $method), $params);
+			if ($response->getStatusCode() === 200) {
+				return $response->getBody()->getContents();
+			}
+
+			// Or throw an exception
+			throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
 		}
-		catch (\Exception $e)
+		catch (RequestException $ex)
 		{
-			throw self::_translateError($e);
+			if ($ex->hasResponse())
+			{
+				$response = $ex->getResponse();
+				throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
+			}
+
+			// Default to a 400 error
+			throw self::_translateError(400, 'Internal server error');
 		}
 	}
 
 	/**
-	 * Translate an \Ergo\Http\Error into a domain-specific exception
-	 * @param \Ergo\Http\Error $e
+	 * Translate a rightsignature status code to a domain specific error
+	 * Error codes are based on https://rightsignature.com/apidocs/documentation_intro#/error_codes
+	 * @param $statusCode The status code of the call
 	 * @return \RightSignature\Exception
 	 */
-	private static function _translateError(\Exception $e)
+	private static function _translateError($statusCode, $message)
 	{
-		switch ($e->getCode())
+		switch ($statusCode)
 		{
-			case 400:
-				return new Exception\RateLimitExceeded();
+			case 401:
+				return new Exception\Unauthorized();
+			case 403:
+				return Exception\UserError::fromXml($message);
 			case 406:
-				return Exception\InvalidRequest::fromXml($e->getMessage());
+				return Exception\InvalidRequest::fromXml($message);
+			case 429:
+				return new Exception\RateLimitExceeded();
+			case 500:
+				return new Exception\ServerError();
 			default:
-				return new Exception($e->getMessage());
+				return new Exception($message);
 		}
+	}
+
+	/**
+	 * @param $apiToken
+	 */
+	private function setToken($apiToken)
+	{
+		$this->_apiToken = $apiToken;
 	}
 }

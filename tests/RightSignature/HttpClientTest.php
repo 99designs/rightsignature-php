@@ -6,7 +6,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Stream;
 
 class HttpClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,9 +43,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
         $response = $httpClient->get('fakeurl');
 
-        $this->assertTrue($response instanceof Response);
-        $this->assertTrue($response->getStatusCode() === 200);
-        $this->assertTrue($response->getBody()->getContents() === $bodyText);
+        $this->assertEquals($response, $bodyText);
     }
 
     public function testPost()
@@ -73,17 +70,101 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $response = $httpClient->post('fakeurl', $postRaw);
         $response2 = $httpClient->post('fakeulr', $postArray);
 
-        $this->assertTrue($response instanceof Response);
-        $this->assertTrue($response->getStatusCode() === 200);
-        $this->assertTrue($response->getBody()->getContents() === $responseContent);
+        $this->assertEquals($response, $responseContent);
 
-        $this->assertTrue($response2 instanceof Response);
-        $this->assertTrue($response2->getStatusCode() === 200);
-        $this->assertTrue($response2->getBody()->getContents() === $responseContent);
+        $this->assertEquals($response2, $responseContent);
     }
 
-    public function testExceptionThrown()
+    public function testInvalidRequestExceptionThrown()
     {
+        $response = 'response';
+        $responseContent = "<data><message>$response</message></data>";
 
+        $mock = new MockHandler([
+            new Response(406, [], $responseContent)
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(['handler' => $handler]);
+
+        $httpClient = HttpClient::forToken($this->_apiToken, $client);
+
+        $this->setExpectedException('\RightSignature\Exception\InvalidRequest', $response);
+        $httpClient->get('fakeUrl');
+    }
+
+    public function testRateLimitingExceptionThrown()
+    {
+        $response = 'invalid request';
+        $responseContent = "<data><message>$response</message></data>";
+
+        $mock = new MockHandler([
+            new Response(429, [], $responseContent)
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(['handler' => $handler]);
+
+        $httpClient = HttpClient::forToken($this->_apiToken, $client);
+
+        $this->setExpectedException('\RightSignature\Exception\RateLimitExceeded', 'Rate limit exceeded');
+        $httpClient->get('fakeUrl');
+    }
+
+    public function testUnauthorizedExceptionThrown()
+    {
+        $responseContent = "<error><message>unauthorized</message></error>";
+
+        $mock = new MockHandler([
+            new Response(401, [], $responseContent)
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(['handler' => $handler]);
+
+        $httpClient = HttpClient::forToken($this->_apiToken, $client);
+
+        $this->setExpectedException('\RightSignature\Exception\Unauthorized', 'You are not authorized to access that resource');
+        $httpClient->get('fakeUrl');
+    }
+
+    public function testUserErrorExceptionThrown()
+    {
+        $response = 'user error';
+        $responseContent = "<error><message>user error</message></error>";
+
+        $mock = new MockHandler([
+            new Response(403, [], $responseContent)
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(['handler' => $handler]);
+
+        $httpClient = HttpClient::forToken($this->_apiToken, $client);
+
+        $this->setExpectedException('\RightSignature\Exception\UserError', $response);
+        $httpClient->get('fakeUrl');
+    }
+
+    public function testServerErrorExceptionThrown()
+    {
+        $responseContent = "<error><message>server error</message></error>";
+
+        $mock = new MockHandler([
+            new Response(500, [], $responseContent)
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(['handler' => $handler]);
+
+        $httpClient = HttpClient::forToken($this->_apiToken, $client);
+
+        $this->setExpectedException('\RightSignature\Exception\ServerError');
+        $httpClient->get('fakeUrl');
     }
 }
