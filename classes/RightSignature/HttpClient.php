@@ -44,6 +44,7 @@ class HttpClient implements HttpClientInterface
 				'Api-Token' => $this->_apiToken,
 				'Api-Version' => \RightSignature::API_VERSION
 			]
+			$postRequest['verify'] = false;
 		]);
 
 		return $response;
@@ -66,6 +67,7 @@ class HttpClient implements HttpClientInterface
 			'Api-Token' => $this->_apiToken,
 			'Api-Version' => \RightSignature::API_VERSION
 		];
+		$postRequest['verify'] = false;
 
 		if (is_array($body)) {
 			$postRequest['form_params'] = $body;
