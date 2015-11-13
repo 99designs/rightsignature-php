@@ -11,15 +11,9 @@ use GuzzleHttp\Exception\RequestException;
  */
 class HttpClient implements HttpClientInterface
 {
-	/**
-	 * @var ClientInterface
-     */
 	private $_client;
-
-	/**
-	 * @var api token
-     */
 	private $_apiToken;
+	private $_verifySSL = true;
 
 	/**
 	 * @param The $apiToken
@@ -48,6 +42,13 @@ class HttpClient implements HttpClientInterface
 	}
 
 	/**
+	 * @param $bool
+     */
+	public function setVerifySSL($bool) {
+		$this->_verifySSL = (bool) $bool;
+	}
+
+	/**
 	 * @param string $path
 	 * @return string
 	 * @throws Exception
@@ -60,7 +61,7 @@ class HttpClient implements HttpClientInterface
 					'Api-Token' => $this->_apiToken,
 					'Api-Version' => \RightSignature::API_VERSION
 				],
-				'verify' => false
+				'verify' => $this->_verifySSL
 			]
 		];
 
@@ -81,7 +82,7 @@ class HttpClient implements HttpClientInterface
 					'Api-Token' => $this->_apiToken,
 					'Api-Version' => \RightSignature::API_VERSION
 				],
-				'verify' => false
+				'verify' => $this->_verifySSL
 			]
 		];
 
