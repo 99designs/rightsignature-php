@@ -2,8 +2,7 @@
 
 namespace RightSignature\Exception;
 
-class InvalidRequest
-	extends \RightSignature\Exception
+class InvalidRequest extends \RightSignature\Exception
 {
 	/**
 	 * Return new instance with error message extracted from XML response
