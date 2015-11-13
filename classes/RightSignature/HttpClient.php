@@ -124,7 +124,7 @@ class HttpClient implements HttpClientInterface
 			}
 
 			// Default to a 400 error
-			throw self::_translateError(400, 'Internal server error');
+			throw self::_translateError(400, 'Bad request');
 		}
 	}
 
