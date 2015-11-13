@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use \RightSignature\Util\XmlHelpers as XmlHelpers;
+use RightSignature\Util\XmlHelpers as XmlHelpers;
 
 /**
  * Extends UnitTestCase with additional helpers.

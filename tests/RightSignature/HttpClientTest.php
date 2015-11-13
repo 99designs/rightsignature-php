@@ -9,7 +9,6 @@ use GuzzleHttp\Psr7\Response;
 
 class HttpClientTest extends \PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         $this->_apiToken = 'somefaketoken';
@@ -32,7 +31,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     {
         $bodyText = 'some text';
         $mock = new MockHandler([
-            new Response(200, [], $bodyText)
+            new Response(200, [], $bodyText),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -49,7 +48,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function testPost()
     {
         $postArray = [
-            'some' => 'post'
+            'some' => 'post',
         ];
 
         $postRaw = 'rawPost';
@@ -58,7 +57,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
         $mock = new MockHandler([
             new Response(200, [], $responseContent),
-            new Response(200, [], $responseContent)
+            new Response(200, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -81,7 +80,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $responseContent = "<data><message>$response</message></data>";
 
         $mock = new MockHandler([
-            new Response(406, [], $responseContent)
+            new Response(406, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -100,7 +99,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $responseContent = "<data><message>$response</message></data>";
 
         $mock = new MockHandler([
-            new Response(429, [], $responseContent)
+            new Response(429, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -115,10 +114,10 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
     public function testUnauthorizedExceptionThrown()
     {
-        $responseContent = "<error><message>unauthorized</message></error>";
+        $responseContent = '<error><message>unauthorized</message></error>';
 
         $mock = new MockHandler([
-            new Response(401, [], $responseContent)
+            new Response(401, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -134,10 +133,10 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function testUserErrorExceptionThrown()
     {
         $response = 'user error';
-        $responseContent = "<error><message>user error</message></error>";
+        $responseContent = '<error><message>user error</message></error>';
 
         $mock = new MockHandler([
-            new Response(403, [], $responseContent)
+            new Response(403, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -152,10 +151,10 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
     public function testServerErrorExceptionThrown()
     {
-        $responseContent = "<error><message>server error</message></error>";
+        $responseContent = '<error><message>server error</message></error>';
 
         $mock = new MockHandler([
-            new Response(500, [], $responseContent)
+            new Response(500, [], $responseContent),
         ]);
 
         $handler = HandlerStack::create($mock);

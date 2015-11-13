@@ -4,7 +4,7 @@ namespace RightSignature\Util;
 
 /**
  * A read-only wrapper around an array-tree that provides property-style
- * access. E.g.:
+ * access. E.g.:.
  *
  *   $a = array('foo_bar' => array('baz_bla' => 'quux'));
  *   
@@ -17,99 +17,107 @@ namespace RightSignature\Util;
  */
 class ArrayDecorator implements \ArrayAccess
 {
-	/**
-	 * @var
+    /**
+     * @var
      */
-	private $_array;
+    private $_array;
 
-	/**
-	 * @param $array
+    /**
+     * @param $array
      */
-	public function __construct($array)
-	{
-		$this->_array = $array;
-	}
+    public function __construct($array)
+    {
+        $this->_array = $array;
+    }
 
-	// ----------------------------------------
-	// Property access
+    // ----------------------------------------
+    // Property access
 
-	/**
-	 * @param $k
-	 * @return ArrayDecorator
+    /**
+     * @param $k
+     *
+     * @return ArrayDecorator
      */
-	public function __get($k)
-	{
-		return $this->_get($k);
-	}
+    public function __get($k)
+    {
+        return $this->_get($k);
+    }
 
-	/**
-	 * @param $k
-	 * @param $v
-	 * @throws \Exception
+    /**
+     * @param $k
+     * @param $v
+     *
+     * @throws \Exception
      */
-	public function __set($k, $v)
-	{
-		throw new \Exception('Unsupported operation');
-	}
+    public function __set($k, $v)
+    {
+        throw new \Exception('Unsupported operation');
+    }
 
-	// ----------------------------------------
-	// ArrayAccess implementation
+    // ----------------------------------------
+    // ArrayAccess implementation
 
-	/**
-	 * @param mixed $k
-	 * @return bool
+    /**
+     * @param mixed $k
+     *
+     * @return bool
      */
-	public function offsetExists($k)
-	{
-		return isset($this->_array[$k]);
-	}
+    public function offsetExists($k)
+    {
+        return isset($this->_array[$k]);
+    }
 
-	/**
-	 * @param mixed $k
-	 * @return ArrayDecorator
+    /**
+     * @param mixed $k
+     *
+     * @return ArrayDecorator
      */
-	public function offsetGet($k)
-	{
-		return $this->_get($k);
-	}
+    public function offsetGet($k)
+    {
+        return $this->_get($k);
+    }
 
-	/**
-	 * @param mixed $k
-	 * @param mixed $v
-	 * @throws \Exception
+    /**
+     * @param mixed $k
+     * @param mixed $v
+     *
+     * @throws \Exception
      */
-	public function offsetSet($k, $v)
-	{
-		throw new \Exception('Unsupported operation');
-	}
+    public function offsetSet($k, $v)
+    {
+        throw new \Exception('Unsupported operation');
+    }
 
-	/**
-	 * @param mixed $k
-	 * @throws \Exception
+    /**
+     * @param mixed $k
+     *
+     * @throws \Exception
      */
-	public function offsetUnset($k)
-	{
-		throw new \Exception('Unsupported operation');
-	}
+    public function offsetUnset($k)
+    {
+        throw new \Exception('Unsupported operation');
+    }
 
-	/**
-	 * @return mixed
+    /**
+     * @return mixed
      */
-	public function asArray()
-	{
-		return $this->_array;
-	}
+    public function asArray()
+    {
+        return $this->_array;
+    }
 
-	// ----------------------------------------
-	// Private
+    // ----------------------------------------
+    // Private
 
-	/**
-	 * @param $k
-	 * @return ArrayDecorator
+    /**
+     * @param $k
+     *
+     * @return ArrayDecorator
      */
-	private function _get($k)
-	{
-		$v = $this->_array[$k];
-		return is_array($v) ? new self($v) : $v;
-	}
+    private function _get($k)
+    {
+        $v = $this->_array[$k];
+
+        return is_array($v) ? new self($v) : $v;
+    }
 }

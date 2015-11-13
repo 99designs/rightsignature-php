@@ -3,6 +3,6 @@
 namespace RightSignature;
 
 class SignerLinks
-	extends \RightSignature\Util\ArrayDecorator
+    extends \RightSignature\Util\ArrayDecorator
 {
 }

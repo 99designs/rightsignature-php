@@ -1,8 +1,6 @@
 <?php
 
-
 namespace RightSignature\Exception;
-
 
 class Unauthorized extends \RightSignature\Exception
 {

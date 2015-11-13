@@ -11,153 +11,156 @@ use GuzzleHttp\Exception\RequestException;
  */
 class HttpClient implements HttpClientInterface
 {
-	private $_client;
-	private $_apiToken;
-	private $_verifySSL = true;
+    private $_client;
+    private $_apiToken;
+    private $_verifySSL = true;
 
-	/**
-	 * @param The $apiToken
-	 * @param \GuzzleHttp\ClientInterface|null $client
-	 * @return HttpClient
+    /**
+     * @param The                              $apiToken
+     * @param \GuzzleHttp\ClientInterface|null $client
+     *
+     * @return HttpClient
      */
-	public static function forToken($apiToken, ClientInterface $client = null)
-	{
-		if (! $client) {
-			$client = new Client([
-				'base_uri' => \RightSignature::API_ENDPOINT,
-			]);
-		}
-		$instance = new self($client);
-		$instance->setToken($apiToken);
+    public static function forToken($apiToken, ClientInterface $client = null)
+    {
+        if (!$client) {
+            $client = new Client([
+                'base_uri' => \RightSignature::API_ENDPOINT,
+            ]);
+        }
+        $instance = new self($client);
+        $instance->setToken($apiToken);
 
-		return $instance;
-	}
+        return $instance;
+    }
 
-	/**
-	 * @param \GuzzleHttp\ClientInterface $client
+    /**
+     * @param \GuzzleHttp\ClientInterface $client
      */
-	private function __construct(ClientInterface $client)
-	{
-		$this->_client = $client;
-	}
+    private function __construct(ClientInterface $client)
+    {
+        $this->_client = $client;
+    }
 
-	/**
-	 * @param $bool
+    /**
+     * @param $bool
      */
-	public function setVerifySSL($bool) {
-		$this->_verifySSL = (bool) $bool;
-	}
+    public function setVerifySSL($bool)
+    {
+        $this->_verifySSL = (bool) $bool;
+    }
 
-	/**
-	 * @param string $path
-	 * @return string
-	 * @throws Exception
-	 */
-	public function get($path)
-	{
-		$getRequest = [
-			$path, [
-				'headers' => [
-					'Api-Token' => $this->_apiToken,
-					'Api-Version' => \RightSignature::API_VERSION
-				],
-				'verify' => $this->_verifySSL
-			]
-		];
-
-		return $this->_submit('get', $getRequest);
-	}
-
-	/**
-	 * @param string $path
-	 * @param string $body
-	 * @return string
-	 * @throws Exception
-	 */
-	public function post($path, $body=null)
-	{
-		$postRequest = [
-			$path, [
-				'headers' => [
-					'Api-Token' => $this->_apiToken,
-					'Api-Version' => \RightSignature::API_VERSION
-				],
-				'verify' => $this->_verifySSL
-			]
-		];
-
-		if (is_array($body))
-		{
-			$postRequest['form_params'] = $body;
-		}
-		else
-		{
-			$postRequest['body'] = $body;
-		}
-
-		return $this->_submit('post', $postRequest);
-	}
-
-	/**
-	 * @param $method
-	 * @param array $params
-	 * @return mixed
-	 * @throws Exception
+    /**
+     * @param string $path
+     *
+     * @return string
+     *
+     * @throws Exception
      */
-	private function _submit($method, Array $params) {
-		try
-		{
-			$response = call_user_func_array(array($this->_client, $method), $params);
-			if ($response->getStatusCode() === 200) {
-				return $response->getBody()->getContents();
-			}
+    public function get($path)
+    {
+        $getRequest = [
+            $path, [
+                'headers' => [
+                    'Api-Token' => $this->_apiToken,
+                    'Api-Version' => \RightSignature::API_VERSION,
+                ],
+                'verify' => $this->_verifySSL,
+            ],
+        ];
 
-			// Or throw an exception
-			throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
-		}
-		catch (RequestException $ex)
-		{
-			if ($ex->hasResponse())
-			{
-				$response = $ex->getResponse();
-				throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
-			}
+        return $this->_submit('get', $getRequest);
+    }
 
-			// Default to a 400 error
-			throw self::_translateError(400, 'Bad request');
-		}
-	}
+    /**
+     * @param string $path
+     * @param string $body
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
+    public function post($path, $body = null)
+    {
+        $postRequest = [
+            $path, [
+                'headers' => [
+                    'Api-Token' => $this->_apiToken,
+                    'Api-Version' => \RightSignature::API_VERSION,
+                ],
+                'verify' => $this->_verifySSL,
+            ],
+        ];
 
-	/**
-	 * Translate a rightsignature status code to a domain specific error
-	 * Error codes are based on https://rightsignature.com/apidocs/documentation_intro#/error_codes
-	 * @param $statusCode The status code of the call
-	 * @return \RightSignature\Exception
-	 */
-	private static function _translateError($statusCode, $message)
-	{
-		switch ($statusCode)
-		{
-			case 401:
-				return new Exception\Unauthorized();
-			case 403:
-				return Exception\UserError::fromXml($message);
-			case 406:
-				return Exception\InvalidRequest::fromXml($message);
-			case 429:
-				return new Exception\RateLimitExceeded();
-			case 500:
-				return new Exception\ServerError();
-			default:
-				return new Exception($message);
-		}
-	}
+        if (is_array($body)) {
+            $postRequest['form_params'] = $body;
+        } else {
+            $postRequest['body'] = $body;
+        }
 
-	/**
-	 * @param $apiToken
-	 */
-	private function setToken($apiToken)
-	{
-		$this->_apiToken = $apiToken;
-	}
+        return $this->_submit('post', $postRequest);
+    }
+
+    /**
+     * @param $method
+     * @param array $params
+     *
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    private function _submit($method, Array $params)
+    {
+        try {
+            $response = call_user_func_array(array($this->_client, $method), $params);
+            if ($response->getStatusCode() === 200) {
+                return $response->getBody()->getContents();
+            }
+
+            // Or throw an exception
+            throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
+        } catch (RequestException $ex) {
+            if ($ex->hasResponse()) {
+                $response = $ex->getResponse();
+                throw self::_translateError($response->getStatusCode(), $response->getBody()->getContents());
+            }
+
+            // Default to a 400 error
+            throw self::_translateError(400, 'Bad request');
+        }
+    }
+
+    /**
+     * Translate a rightsignature status code to a domain specific error
+     * Error codes are based on https://rightsignature.com/apidocs/documentation_intro#/error_codes.
+     *
+     * @param $statusCode The status code of the call
+     *
+     * @return \RightSignature\Exception
+     */
+    private static function _translateError($statusCode, $message)
+    {
+        switch ($statusCode) {
+            case 401:
+                return new Exception\Unauthorized();
+            case 403:
+                return Exception\UserError::fromXml($message);
+            case 406:
+                return Exception\InvalidRequest::fromXml($message);
+            case 429:
+                return new Exception\RateLimitExceeded();
+            case 500:
+                return new Exception\ServerError();
+            default:
+                return new Exception($message);
+        }
+    }
+
+    /**
+     * @param $apiToken
+     */
+    private function setToken($apiToken)
+    {
+        $this->_apiToken = $apiToken;
+    }
 }

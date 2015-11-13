@@ -54,7 +54,7 @@ class ArrayDecoratorTest extends \PHPUnit_Framework_TestCase
         $this->instance->foo->bar[1] = 'asdf';
 
         $this->setExpectedException('Exception');
-        $this->instance->foo->bar []= 'aaaa';
+        $this->instance->foo->bar [] = 'aaaa';
     }
 
     public function testOffsetUnset()

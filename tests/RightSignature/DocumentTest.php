@@ -6,7 +6,6 @@ use PHPUnit_Framework_TestCase;
 
 class DocumentTest extends PHPUnit_Framework_TestCase
 {
-
     public function testSignerLinks()
     {
         $response = <<<EOS
@@ -50,7 +49,6 @@ EOS;
 
     public function testDocumentDetails()
     {
-
         $response = <<<EOS
         <document>
           <guid>LPARZRTTITSIBNNJHPSFTWX</guid>
@@ -102,13 +100,13 @@ EOS;
         </document>
 EOS;
 
-            $client = \Mockery::mock('client');
-            $client->shouldReceive('get')
+        $client = \Mockery::mock('client');
+        $client->shouldReceive('get')
                 ->with('/api/documents/1234.xml')
                 ->andReturn($response);
 
-            $document = Document::documentDetails($client, '1234');
-            $this->assertEquals('support@rightsignature.com', $document->recipients[0]->email);
-            $this->assertEquals('Document emailed to John Bellingham (john.b@rightsignature.com)', $document->audit_trail[0]->message);
+        $document = Document::documentDetails($client, '1234');
+        $this->assertEquals('support@rightsignature.com', $document->recipients[0]->email);
+        $this->assertEquals('Document emailed to John Bellingham (john.b@rightsignature.com)', $document->audit_trail[0]->message);
     }
 }

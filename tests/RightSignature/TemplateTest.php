@@ -2,7 +2,6 @@
 
 namespace RightSignature;
 
-
 class TemplateTest extends \Tests\UnitTestCase
 {
     public function testPrepackage()
@@ -62,6 +61,7 @@ EOS;
                 '/api/templates/1234/prepackage.xml',
                 \Mockery::on(function ($body) use ($self) {
                     $self->assertEqualXml('<callback_location>http://example.com/</callback_location>', $body);
+
                     return true;
                 })
             )
