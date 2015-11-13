@@ -49,6 +49,7 @@ EOS;
                 '/api/templates.xml',
                 \Mockery::on(function ($body) use ($self, $expectedRequest) {
                     $self->assertEqualXml($expectedRequest, $body);
+
                     return true;
                 })
             )

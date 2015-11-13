@@ -2,7 +2,6 @@
 
 namespace RightSignature;
 
-
 class CallbackTest extends \PHPUnit_Framework_TestCase
 {
     public function testParseDocumentSigned()
