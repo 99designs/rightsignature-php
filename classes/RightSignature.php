@@ -119,7 +119,7 @@ class RightSignature
 	 * @param int $widgetHeight optional widget height (px)
 	 * @return string
 	 */
-	public function embeddedWidgetUrl($signerToken, $widgetHeight=null)
+	public static function embeddedWidgetUrl($signerToken, $widgetHeight=null)
 	{
 		$args = array("rt=$signerToken");
 		if ($widgetHeight) $args []= "height=$widgetHeight";
