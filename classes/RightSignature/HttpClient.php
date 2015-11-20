@@ -16,7 +16,7 @@ class HttpClient implements HttpClientInterface
     private $_verifySSL = true;
 
     /**
-     * @param The                              $apiToken
+     * @param $apiToken
      * @param \GuzzleHttp\ClientInterface|null $client
      *
      * @return HttpClient
@@ -45,61 +45,65 @@ class HttpClient implements HttpClientInterface
     /**
      * @param $bool
      */
-    public function setVerifySSL($bool)
-    {
-        $this->_verifySSL = (bool) $bool;
-    }
+	public function setVerifySSL($bool) {
+		$this->_verifySSL = (bool) $bool;
+	}
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     *
-     * @throws Exception
+	/**
+	 * @param string $path
+	 * @return string
+	 * @throws Exception
+	 */
+	public function get($path)
+	{
+		$getRequest = [
+			$path, [
+				'headers' => $this->_getHeaders(),
+				'verify' => $this->_verifySSL
+			]
+		];
+
+		return $this->_submit('get', $getRequest);
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $body
+	 * @return string
+	 * @throws Exception
+	 */
+	public function post($path, $body=null)
+	{
+		$postRequest = [
+			$path, [
+				'headers' => $this->_getHeaders(),
+				'verify' => $this->_verifySSL
+			]
+		];
+
+		if (is_array($body))
+		{
+			$postRequest['form_params'] = $body;
+		}
+		else
+		{
+			$postRequest['body'] = $body;
+		}
+
+		return $this->_submit('post', $postRequest);
+	}
+
+	/**
+	 * @return array headers for client call
      */
-    public function get($path)
-    {
-        $getRequest = [
-            $path, [
-                'headers' => [
-                    'Api-Token' => $this->_apiToken,
-                    'Api-Version' => \RightSignature::API_VERSION,
-                ],
-                'verify' => $this->_verifySSL,
-            ],
-        ];
-
-        return $this->_submit('get', $getRequest);
-    }
-
-    /**
-     * @param string $path
-     * @param string $body
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function post($path, $body = null)
-    {
-        $postRequest = [
-            $path, [
-                'headers' => [
-                    'Api-Token' => $this->_apiToken,
-                    'Api-Version' => \RightSignature::API_VERSION,
-                ],
-                'verify' => $this->_verifySSL,
-            ],
-        ];
-
-        if (is_array($body)) {
-            $postRequest['form_params'] = $body;
-        } else {
-            $postRequest['body'] = $body;
-        }
-
-        return $this->_submit('post', $postRequest);
-    }
+	private function _getHeaders()
+	{
+		return [
+			'Api-Token' => $this->_apiToken,
+			'Api-Version' => \RightSignature::API_VERSION,
+			'Content-Type' => 'application/xml'
+		];
+	}
 
     /**
      * @param $method
