@@ -100,7 +100,7 @@ class ArrayHelpers
     public static function ensureIsSet($array, $key)
     {
         if (!isset($array[$key])) {
-            throw new Exception("Missing required key: '$key'");
+            throw new \Exception("Missing required key: '$key'");
         }
     }
 }
