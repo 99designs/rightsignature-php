@@ -87,9 +87,9 @@ class HttpClient implements HttpClientInterface
         ];
 
         if (is_array($body)) {
-            $postRequest['form_params'] = $body;
+            $postRequest[1]['form_params'] = $body;
         } else {
-            $postRequest['body'] = $body;
+            $postRequest[1]['body'] = $body;
         }
 
         return $this->_submit('post', $postRequest);
