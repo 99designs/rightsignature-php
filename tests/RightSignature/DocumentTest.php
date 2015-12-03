@@ -113,7 +113,6 @@ EOS;
     public function testSendDocument()
     {
         $response = <<<EOS
-            <?xml version="1.0" encoding="UTF-8"?>
             <document>
                 <status>sent</status>
                 <guid>2VMW88J3424MPEYF9DU6VY</guid>
