@@ -113,29 +113,29 @@ EOS;
     public function testSendDocument()
     {
         $response = <<<EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<document>
-	<status>sent</status>
-	<guid>2VMW88J3424MPEYF9DU6VY</guid>
-</document>
+            <?xml version="1.0" encoding="UTF-8"?>
+            <document>
+                <status>sent</status>
+                <guid>2VMW88J3424MPEYF9DU6VY</guid>
+            </document>
 EOS;
         $payload = [
-          'subject' => '- email subject -',
-          'action' => 'send',
-          'type' => 'base64',
-          'recipients' => [
-              'recipient' => [
-                  [
-                      'is_sender' => true,
-                      'role' => 'cc',
-                  ],
-                  [
-                      'name' => 'Signer 1',
-                      'email' => 'pjafwcyv@sharklasers.com',
-                      'role' => 'signer',
-                  ],
-              ],
-          ],
+            'subject' => '- email subject -',
+            'action' => 'send',
+            'type' => 'base64',
+            'recipients' => [
+                'recipient' => [
+                    [
+                        'is_sender' => true,
+                        'role' => 'cc',
+                    ],
+                    [
+                        'name' => 'Signer 1',
+                        'email' => 'pjafwcyv@sharklasers.com',
+                        'role' => 'signer',
+                    ],
+                ],
+            ],
         ];
 
         $client = \Mockery::mock('client');
