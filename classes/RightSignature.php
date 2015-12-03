@@ -108,6 +108,19 @@ class RightSignature
         // return Document::list($this->_client);
     }
 
+    /**
+     * This method is for sending a once-off document that has not been setup as a Template.
+     *
+     * @param string $path Path of the document to send
+     * @param array  $args Arguments to use as payload
+     *
+     * @return array
+     */
+    public function sendDocument($path, $args)
+    {
+        return Document::send($this->_client, $path, $args);
+    }
+
     // ----------------------------------------
     // Signer Links
 
