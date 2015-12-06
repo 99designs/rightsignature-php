@@ -142,12 +142,11 @@ EOS;
                 ->withAnyArgs()
                 ->andReturn($response);
 
-        $file = fopen('sample-file.pdf', 'w');
-        fwrite($file, '- test document to sign -');
-        fclose($file);
+        $tmp = tmpfile();
+        fwrite($tmp, '- test document to sign -');
+        $meta = stream_get_meta_data($tmp);
 
-        $document = Document::send($client, 'sample-file.pdf', $payload);
-        @unlink('sample-file.pdf');
+        $document = Document::send($client, $meta['uri'], $payload);
 
         $this->assertEquals('sent', $document['status']);
     }
