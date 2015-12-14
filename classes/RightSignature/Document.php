@@ -45,4 +45,46 @@ class Document extends \RightSignature\Util\ArrayDecorator
 
         return new self($array);
     }
+
+    /**
+     * This method is for sending a once-off document that has not been setup as a Template.
+     *
+     * @param string $path    Absolute path of the document
+     * @param array  $payload Payload of the request
+     *
+     * @return array XML response parsed to array
+     *
+     * @throws Exception Missing required key
+     */
+    public static function send($client, $path, $payload)
+    {
+        // validation of required arguments
+        foreach (['action', 'type', 'recipients'] as $argument) {
+            ArrayHelpers::ensureIsSet($payload, $argument);
+        }
+
+        $info = pathinfo($path);
+        $payload['document_data'] = [
+            'type' => $payload['type'],
+            'value' => $path,
+        ];
+
+        // change the underlying document (url, base64)
+        if ('base64' == $payload['type']) {
+            $payload['document_data']['filename'] = $info['basename'];
+
+            // get the resource content
+            $resource = fopen($path, 'r');
+            $content = fread($resource, filesize($path));
+            fclose($resource);
+
+            $payload['document_data']['value'] = base64_encode($content);
+        }
+
+        // make the request
+        $payload = XmlHelpers::toXml(['document' => $payload]);
+        $response = $client->post('/api/documents.xml', $payload);
+
+        return XmlHelpers::toArray($response);
+    }
 }

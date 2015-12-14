@@ -109,4 +109,45 @@ EOS;
         $this->assertEquals('support@rightsignature.com', $document->recipients[0]->email);
         $this->assertEquals('Document emailed to John Bellingham (john.b@rightsignature.com)', $document->audit_trail[0]->message);
     }
+
+    public function testSendDocument()
+    {
+        $response = <<<EOS
+            <document>
+                <status>sent</status>
+                <guid>2VMW88J3424MPEYF9DU6VY</guid>
+            </document>
+EOS;
+        $payload = [
+            'subject' => '- email subject -',
+            'action' => 'send',
+            'type' => 'base64',
+            'recipients' => [
+                'recipient' => [
+                    [
+                        'is_sender' => true,
+                        'role' => 'cc',
+                    ],
+                    [
+                        'name' => 'Signer 1',
+                        'email' => 'pjafwcyv@sharklasers.com',
+                        'role' => 'signer',
+                    ],
+                ],
+            ],
+        ];
+
+        $client = \Mockery::mock('client');
+        $client->shouldReceive('post')
+                ->withAnyArgs()
+                ->andReturn($response);
+
+        $tmp = tmpfile();
+        fwrite($tmp, '- test document to sign -');
+        $meta = stream_get_meta_data($tmp);
+
+        $document = Document::send($client, $meta['uri'], $payload);
+
+        $this->assertEquals('sent', $document['status']);
+    }
 }

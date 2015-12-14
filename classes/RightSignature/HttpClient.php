@@ -79,18 +79,23 @@ class HttpClient implements HttpClientInterface
      */
     public function post($path, $body = null)
     {
-        $postRequest = [
-            $path, [
-                'headers' => $this->_getHeaders(),
-                'verify' => $this->_verifySSL,
-            ],
+        // request options
+        $options = [
+            'headers' => $this->_getHeaders(),
+            'verify' => $this->_verifySSL,
         ];
 
+        // determinate data to send
         if (is_array($body)) {
-            $postRequest['form_params'] = $body;
-        } else {
-            $postRequest['body'] = $body;
+            $options['form_params'] = $body;
+        } else if (is_string($body)) {
+            $options['body'] = $body;
         }
+
+        $postRequest = [
+            $path,
+            $options,
+        ];
 
         return $this->_submit('post', $postRequest);
     }
