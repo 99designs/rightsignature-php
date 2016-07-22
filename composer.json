@@ -13,7 +13,7 @@
     "require-dev": {
         "phpunit/phpunit": "~5.0",
         "mockery/mockery": ">=0.7.2",
-        "fabpot/php-cs-fixer": "^1.10"
+        "friendsofphp/php-cs-fixer": "^1.10"
     },
     "autoload": {
         "psr-0": {"RightSignature": "classes"}
